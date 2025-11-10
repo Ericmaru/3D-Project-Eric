@@ -1,7 +1,3 @@
-using System.Data.Common;
-using TreeEditor;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,14 +5,13 @@ public class LayerController : MonoBehaviour
 {
     //Components
     private CharacterController _controller;
+    private Animator _animator;
 
     //Inputs
     private InputAction _moveAction;
     private Vector2 _moveInput;
     private InputAction _jumpAction;
-    private InputAction _lookAction;
-    private Vector2 _lookInput;
-    private InputAction _aimAction;
+    public InputActionAsset playerInputs;
 
     //Floats
     [SerializeField] private float _movementSpeed = 5;
@@ -38,36 +33,23 @@ public class LayerController : MonoBehaviour
     void Awake()
     {
         _controller = GetComponent<CharacterController>();
+        _animator = GetComponent<Animator>();
         _moveAction = InputSystem.actions["Move"];
         _jumpAction = InputSystem.actions["Jump"];
-        _lookAction = InputSystem.actions["Look"];
-        _aimAction = InputSystem.actions["Aim"];
         _mainCamera = Camera.main.transform;
-    }
-
-    void Start()
-    {
-
     }
 
     void Update()
     {
         _moveInput = _moveAction.ReadValue<Vector2>();
-        _lookInput = _lookAction.ReadValue<Vector2>();
 
-        if (_aimAction.IsInProgress())
-        {
-            AimMovement();
-        }
-        else
-        {
-            Movement();
-        }
-
+        Movement();
+        
         if (_jumpAction.WasPressedThisFrame() && IsGrounded())
         {
             Jump();
         }
+       
         Gravity();
 
     }
@@ -75,7 +57,9 @@ public class LayerController : MonoBehaviour
     void Movement()
     {
         Vector3 direction = new Vector3(_moveInput.x, 0, _moveInput.y);
-
+        _animator.SetFloat("Vertical", direction.magnitude);
+        _animator.SetFloat("Horizontal", 0);
+        
         if (direction != Vector3.zero)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + _mainCamera.eulerAngles.y;
@@ -86,22 +70,9 @@ public class LayerController : MonoBehaviour
         }
     }
 
-    void AimMovement()
-    {
-        Vector3 direction = new Vector3(_moveInput.x, 0, _moveInput.y);
-
-        if (direction != Vector3.zero)
-        {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + _mainCamera.eulerAngles.y;
-            float smoothAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, _mainCamera.eulerAngles.y, ref _turnSmoothVelocity, _smoothTime);
-            transform.rotation = Quaternion.Euler(0, smoothAngle, 0);
-            Vector3 moveDirection = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
-            _controller.Move(moveDirection.normalized * _movementSpeed * Time.deltaTime);
-        }
-    }
-
     void Jump()
     {
+        _animator.SetBool("IsJumping", true);
         _playerGravity.y = Mathf.Sqrt(_jumpHeight * -2 * _gravity);
         _controller.Move(_playerGravity * Time.deltaTime);
     }
@@ -114,7 +85,8 @@ public class LayerController : MonoBehaviour
         }
         else if (IsGrounded() && _playerGravity.y < 0)
         {
-            _playerGravity.y = 0;
+            _playerGravity.y = _gravity;
+            _animator.SetBool("IsJumping", false);
         }
         _controller.Move(_playerGravity * Time.deltaTime);
 
@@ -134,6 +106,12 @@ public class LayerController : MonoBehaviour
             Debug.DrawRay(_sensor.position, -transform.up * _sensorRadius, Color.green);
             return false; 
         }
+    }
+
+    public void Death()
+    {
+        _animator.SetTrigger("Death");
+        playerInputs.FindActionMap("Player").Disable();
     }
 
 }   

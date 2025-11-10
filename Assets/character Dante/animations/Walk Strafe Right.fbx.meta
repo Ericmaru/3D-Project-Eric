@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b5bd4a0852751e9438ed2736d518790f
+guid: 3720f800ade07da45b1169556961b3b3
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: dying
+      name: Andar der
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 132
+      lastFrame: 44
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b5bd4a0852751e9438ed2736d518790f
+guid: 5f41fdef4d1fd34409949e76bb7ef18c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: dying
+      name: Correr der
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 132
+      lastFrame: 20
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

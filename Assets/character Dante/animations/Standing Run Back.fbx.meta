@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b5bd4a0852751e9438ed2736d518790f
+guid: a7a62d6ade7121a449f32cc20c6e49a5
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: dying
+      name: Correr atras
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 132
+      lastFrame: 19
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

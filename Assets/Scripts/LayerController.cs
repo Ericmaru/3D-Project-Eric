@@ -49,7 +49,7 @@ public class LayerController : MonoBehaviour
         {
             Jump();
         }
-       
+
         Gravity();
 
     }
